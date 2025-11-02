@@ -34,6 +34,12 @@ export const Navbar = () => {
             <div className="text-2xl font-bold text-gradient">Technova</div>
           </Link>
 
+          <div className="hidden lg:flex items-center gap-6 ml-8">
+            <Link to="/products" className="text-foreground hover:text-primary transition-colors">
+              Products
+            </Link>
+          </div>
+
           <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-2xl mx-8">
             <div className="relative w-full">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />

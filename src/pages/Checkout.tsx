@@ -184,7 +184,7 @@ const Checkout = () => {
                     size="lg"
                   >
                     <Lock className="mr-2 h-4 w-4" />
-                    {processing ? 'Processing...' : `Pay $${totalPrice.toFixed(2)}`}
+                    {processing ? 'Processing...' : `Pay ₹${(totalPrice * 83).toFixed(2)}`}
                   </Button>
                 </form>
               </CardContent>
@@ -212,7 +212,7 @@ const Checkout = () => {
                         <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
                       </div>
                       <div className="text-right flex-shrink-0">
-                        <p className="font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
+                        <p className="font-semibold">₹{(item.price * item.quantity * 83).toFixed(2)}</p>
                       </div>
                     </div>
                   ))}
@@ -221,7 +221,7 @@ const Checkout = () => {
                 <div className="space-y-2 border-t border-border pt-4">
                   <div className="flex justify-between text-muted-foreground">
                     <span>Subtotal</span>
-                    <span>${totalPrice.toFixed(2)}</span>
+                    <span>₹{(totalPrice * 83).toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-muted-foreground">
                     <span>Shipping</span>
@@ -229,7 +229,7 @@ const Checkout = () => {
                   </div>
                   <div className="flex justify-between text-xl font-bold pt-2">
                     <span>Total</span>
-                    <span className="text-primary">${totalPrice.toFixed(2)}</span>
+                    <span className="text-primary">₹{(totalPrice * 83).toFixed(2)}</span>
                   </div>
                 </div>
               </CardContent>

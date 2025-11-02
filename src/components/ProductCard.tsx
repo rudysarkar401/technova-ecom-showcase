@@ -49,7 +49,7 @@ export const ProductCard = ({ id, title, price, image, rating, category }: Produ
             )}
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-2xl font-bold text-primary">${price.toFixed(2)}</span>
+            <span className="text-2xl font-bold text-primary">₹{(price * 83).toFixed(2)}</span>
           </div>
         </CardContent>
         <CardFooter className="p-4 pt-0">

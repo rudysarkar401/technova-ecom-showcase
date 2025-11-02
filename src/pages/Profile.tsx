@@ -72,7 +72,7 @@ const Profile = () => {
               <div className="flex justify-between items-center">
                 <span className="text-muted-foreground">Total Spent</span>
                 <span className="text-2xl font-bold text-primary">
-                  ${orders.reduce((sum: number, order: any) => sum + order.total, 0).toFixed(2)}
+                  ₹{(orders.reduce((sum: number, order: any) => sum + order.total, 0) * 83).toFixed(2)}
                 </span>
               </div>
               <Button

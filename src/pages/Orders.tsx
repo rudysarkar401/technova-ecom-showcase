@@ -83,12 +83,12 @@ const Orders = () => {
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-sm line-clamp-1">{item.title}</p>
                         <p className="text-sm text-muted-foreground">
-                          ${item.price.toFixed(2)} × {item.quantity}
+                          ₹{(item.price * 83).toFixed(2)} × {item.quantity}
                         </p>
                       </div>
                       <div className="text-right flex-shrink-0">
                         <p className="font-semibold">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          ₹{(item.price * item.quantity * 83).toFixed(2)}
                         </p>
                       </div>
                     </div>
@@ -97,7 +97,7 @@ const Orders = () => {
                 <div className="border-t border-border pt-4 flex justify-between items-center">
                   <span className="font-semibold">Total</span>
                   <span className="text-2xl font-bold text-primary">
-                    ${order.total.toFixed(2)}
+                    ₹{(order.total * 83).toFixed(2)}
                   </span>
                 </div>
               </CardContent>
