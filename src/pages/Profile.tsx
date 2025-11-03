@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 
 const Profile = () => {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, profile, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const Profile = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  if (!user) {
+  if (!user || !profile) {
     return null;
   }
 
@@ -37,7 +37,7 @@ const Profile = () => {
             <CardContent className="space-y-4">
               <div>
                 <p className="text-sm text-muted-foreground mb-1">Full Name</p>
-                <p className="font-medium">{user.name}</p>
+                <p className="font-medium">{profile.name}</p>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground mb-1 flex items-center gap-2">

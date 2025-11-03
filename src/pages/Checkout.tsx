@@ -63,10 +63,9 @@ const Checkout = () => {
       localStorage.setItem('technova_orders', JSON.stringify(orders));
 
       // Track purchases
-      const storedUser = localStorage.getItem('technova_user');
-      if (storedUser) {
-        try {
-          const user = JSON.parse(storedUser);
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
           const purchases = items.map((item) => ({
             user_id: user.id,
             product_id: item.id,
@@ -74,9 +73,9 @@ const Checkout = () => {
           }));
           
           await supabase.from('user_interactions').insert(purchases);
-        } catch (error) {
-          console.error('Error tracking purchases:', error);
         }
+      } catch (error) {
+        console.error('Error tracking purchases:', error);
       }
 
       clearCart();

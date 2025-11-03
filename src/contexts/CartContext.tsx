@@ -51,9 +51,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
     // Track cart addition
     try {
-      const storedUser = localStorage.getItem('technova_user');
-      if (storedUser) {
-        const user = JSON.parse(storedUser);
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
         await supabase.from('user_interactions').insert({
           user_id: user.id,
           product_id: product.id,

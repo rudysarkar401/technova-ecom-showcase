@@ -26,7 +26,7 @@ export const RecommendedProducts = () => {
 
   useEffect(() => {
     const fetchRecommendations = async () => {
-      if (!user) {
+      if (!user?.id) {
         setLoading(false);
         return;
       }

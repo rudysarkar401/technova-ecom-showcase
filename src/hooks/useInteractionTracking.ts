@@ -10,7 +10,7 @@ export const useInteractionTracking = () => {
     interactionType: 'view' | 'cart_add' | 'purchase',
     category?: string
   ) => {
-    if (!user) return;
+    if (!user?.id) return;
 
     try {
       const { error } = await supabase.from('user_interactions').insert({

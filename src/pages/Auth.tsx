@@ -25,12 +25,12 @@ const Auth = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const success = await login(loginData.email, loginData.password);
-    if (success) {
+    const result = await login(loginData.email, loginData.password);
+    if (result.success) {
       toast.success('Logged in successfully!');
       navigate(redirect);
     } else {
-      toast.error('Invalid email or password');
+      toast.error(result.error || 'Invalid email or password');
     }
   };
 
@@ -40,12 +40,12 @@ const Auth = () => {
       toast.error('Passwords do not match');
       return;
     }
-    const success = await signup(signupData.email, signupData.password, signupData.name);
-    if (success) {
-      toast.success('Account created successfully!');
+    const result = await signup(signupData.email, signupData.password, signupData.name);
+    if (result.success) {
+      toast.success('Account created successfully! Please check your email to confirm.');
       navigate(redirect);
     } else {
-      toast.error('Email already exists');
+      toast.error(result.error || 'Failed to create account');
     }
   };
 
