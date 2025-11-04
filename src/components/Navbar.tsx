@@ -1,14 +1,16 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, Search, LogOut } from 'lucide-react';
+import { ShoppingCart, User, Search, LogOut, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useAdmin } from '@/hooks/useAdmin';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { Badge } from '@/components/ui/badge';
 import { useState } from 'react';
@@ -16,6 +18,7 @@ import { useState } from 'react';
 export const Navbar = () => {
   const { totalItems } = useCart();
   const { user, logout, isAuthenticated } = useAuth();
+  const { isAdmin } = useAdmin();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -62,6 +65,15 @@ export const Navbar = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
+                  {isAdmin && (
+                    <>
+                      <DropdownMenuItem onClick={() => navigate('/admin/analytics')}>
+                        <Shield className="mr-2 h-4 w-4 text-primary" />
+                        Admin Analytics
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                    </>
+                  )}
                   <DropdownMenuItem onClick={() => navigate('/profile')}>
                     <User className="mr-2 h-4 w-4" />
                     Profile
