@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { productApi } from '@/services/productApi';
 
 interface Product {
   id: number;
@@ -32,19 +33,23 @@ const Products = () => {
   const [sortBy, setSortBy] = useState('default');
 
   useEffect(() => {
-    Promise.all([
-      fetch('https://fakestoreapi.com/products').then((res) => res.json()),
-      fetch('https://fakestoreapi.com/products/categories').then((res) => res.json()),
-    ])
-      .then(([productsData, categoriesData]) => {
+    const fetchData = async () => {
+      try {
+        const [productsData, categoriesData] = await Promise.all([
+          productApi.fetchAllProducts(),
+          productApi.fetchAllCategories(),
+        ]);
+
         setProducts(productsData);
         setCategories(categoriesData);
-        setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchData();
   }, []);
 
   useEffect(() => {

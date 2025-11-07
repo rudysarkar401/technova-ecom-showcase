@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/ProductCard';
 import { RecommendedProducts } from '@/components/RecommendedProducts';
 import heroBanner from '@/assets/hero-banner.jpg';
+import { productApi } from '@/services/productApi';
 
 interface Product {
   id: number;
@@ -20,16 +21,18 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('https://fakestoreapi.com/products?limit=8')
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchProducts = async () => {
+      try {
+        const data = await productApi.fetchAllProducts(12);
         setFeaturedProducts(data);
-        setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error('Error fetching products:', error);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   return (

@@ -5,12 +5,13 @@ import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
 import { Badge } from '@/components/ui/badge';
 import { useInteractionTracking } from '@/hooks/useInteractionTracking';
+import { productApi } from '@/services/productApi';
 
 interface Product {
   id: number;
   title: string;
   price: number;
-  description: string;
+  description?: string;
   category: string;
   image: string;
   rating: { rate: number; count: number };
@@ -25,19 +26,25 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`https://fakestoreapi.com/products/${id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setProduct(data);
-        setLoading(false);
-        // Track product view
-        trackInteraction(data.id, 'view', data.category);
-      })
-      .catch((error) => {
+    const fetchProduct = async () => {
+      try {
+        const data = await productApi.fetchProductById(Number(id));
+        if (data) {
+          setProduct(data);
+          // Track product view
+          trackInteraction(data.id, 'view', data.category);
+        }
+      } catch (error) {
         console.error('Error fetching product:', error);
+      } finally {
         setLoading(false);
-      });
-  }, [id]);
+      }
+    };
+
+    if (id) {
+      fetchProduct();
+    }
+  }, [id, trackInteraction]);
 
   if (loading) {
     return (

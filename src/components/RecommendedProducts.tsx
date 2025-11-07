@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { ProductCard } from '@/components/ProductCard';
 import { Sparkles } from 'lucide-react';
+import { productApi } from '@/services/productApi';
 
 interface Product {
   id: number;
@@ -55,12 +56,10 @@ export const RecommendedProducts = () => {
         // Fetch product details from API
         const productIds = recommendations.map((r: Recommendation) => r.product_id);
         const productsData = await Promise.all(
-          productIds.map((id) =>
-            fetch(`https://fakestoreapi.com/products/${id}`).then((res) => res.json())
-          )
+          productIds.map((id) => productApi.fetchProductById(id))
         );
 
-        setProducts(productsData);
+        setProducts(productsData.filter((p): p is Product => p !== null));
       } catch (error) {
         console.error('Error fetching recommendations:', error);
       } finally {
