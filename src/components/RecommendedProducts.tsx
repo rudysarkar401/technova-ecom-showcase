@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { ProductCard } from '@/components/ProductCard';
 import { Sparkles } from 'lucide-react';
-import { productApi } from '@/services/productApi';
+import { recommendationEngine } from '@/services/recommendationEngine';
 
 interface Product {
   id: number;
@@ -14,12 +13,6 @@ interface Product {
   category: string;
 }
 
-interface Recommendation {
-  product_id: number;
-  score: number;
-  reason: string;
-}
-
 export const RecommendedProducts = () => {
   const { user } = useAuth();
   const [products, setProducts] = useState<Product[]>([]);
@@ -27,39 +20,12 @@ export const RecommendedProducts = () => {
 
   useEffect(() => {
     const fetchRecommendations = async () => {
-      if (!user?.id) {
-        setLoading(false);
-        return;
-      }
-
       try {
-        // Get recommendations from database
-        const { data: recommendations, error } = await supabase.rpc(
-          'get_product_recommendations',
-          {
-            p_user_id: user.id,
-            p_limit: 8,
-          }
+        const recommendations = await recommendationEngine.getRecommendationsWithFallback(
+          user?.id,
+          8
         );
-
-        if (error) {
-          console.error('Error fetching recommendations:', error);
-          setLoading(false);
-          return;
-        }
-
-        if (!recommendations || recommendations.length === 0) {
-          setLoading(false);
-          return;
-        }
-
-        // Fetch product details from API
-        const productIds = recommendations.map((r: Recommendation) => r.product_id);
-        const productsData = await Promise.all(
-          productIds.map((id) => productApi.fetchProductById(id))
-        );
-
-        setProducts(productsData.filter((p): p is Product => p !== null));
+        setProducts(recommendations);
       } catch (error) {
         console.error('Error fetching recommendations:', error);
       } finally {
